@@ -36,7 +36,7 @@ static uint8_t scanning_pins[SCANNING_PINS_CNT] = {7,8,9,10,17,18,19};
 
 
 PinStatus pins[OUT_PINS_CNT + SCANNING_PINS_CNT];
-Position c_pos;
+Position c_pos={-1,-1};
 
 
 boolean keyboard_connection() {
@@ -134,6 +134,10 @@ void loop() {
   if (Serial.available() > 0) {
     char ch = Serial.read();
     Serial.print(ch);
+    if (ch == '#') {
+      Serial.write('#');
+      return;  // skip rest of the loop for this iteration
+    }
     if (ch == 'Y') {
       Serial.println("Manual keyboard test triggered.");
       keyboard_connection();
